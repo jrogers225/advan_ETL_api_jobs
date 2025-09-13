@@ -1,0 +1,7 @@
+requests
+pandas
+python-dotenv
+google-cloud-bigquery
+google-api-core
+pyarrow
+pandas-gbq
