@@ -59,14 +59,18 @@ def main():
 		# Convert key columns to appropriate types for BigQuery
 		logging.info("Converting key columns to appropriate types...")
 		try:
-			# Convert numeric key columns to integers, handling NaN values
+			# Validate and convert key columns to integers
 			for key_col in key_columns:
-				if key_col in ['media_plan_id', 'estimate_id', 'order_number', 'order_line_number']:
-					# Convert to numeric first, then to nullable integer
-					df[key_col] = pd.to_numeric(df[key_col], errors='coerce')
-					# Convert to integer, replacing NaN with 0 or appropriate default
-					df[key_col] = df[key_col].fillna(0).astype('int64')
-					logging.info(f"Converted {key_col} to int64")
+				converted = pd.to_numeric(df[key_col], errors='coerce')
+				invalid_mask = converted.isna()
+				if invalid_mask.any():
+					invalid_count = int(invalid_mask.sum())
+					logging.error(f"Key column '{key_col}' contains {invalid_count} non-numeric or null value(s); aborting load.")
+					problem_sample = df.loc[invalid_mask, key_columns].head(5)
+					logging.info(f"Sample problematic rows for '{key_col}':\n{problem_sample}")
+					return 1
+				df[key_col] = converted.astype('int64')
+				logging.info(f"Converted {key_col} to int64")
 			
 			# Handle problematic numeric columns that BigQuery can't determine types for
 			numeric_columns = ['plan_agency_fee', 'plan_units', 'plan_net_amount', 'plan_bill_amount', 

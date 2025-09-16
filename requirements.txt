@@ -5,3 +5,5 @@ google-cloud-bigquery
 google-api-core
 pyarrow
 pandas-gbq
+SQLAlchemy
+pyodbc

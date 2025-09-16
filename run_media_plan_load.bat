@@ -18,8 +18,11 @@ echo Using start date: %START_DATE%
 REM Set the working directory to the project root
 cd /d "C:\Users\jrogers\Documents\Visual Studio Code\Python Projects\advan_ETL_api_jobs-main"
 
-REM Log file for tracking execution
-set LOGFILE=logs\media_plan_load_%date:~-4,4%%date:~-10,2%%date:~-7,2%_%time:~0,2%%time:~3,2%%time:~6,2%.log
+REM Log file for tracking execution - replace colons with underscores for valid filename
+set TIMESTAMP=%time:~0,2%_%time:~3,2%_%time:~6,2%
+set TIMESTAMP=%TIMESTAMP::=_%
+set TIMESTAMP=%TIMESTAMP: =0%
+set LOGFILE=logs\media_plan_load_%date:~-4,4%%date:~-10,2%%date:~-7,2%_%TIMESTAMP%.log
 
 REM Create logs directory if it doesn't exist
 if not exist logs mkdir logs
