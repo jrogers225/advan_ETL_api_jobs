@@ -57,7 +57,9 @@ def get_media_plan_data(start_date=None, end_date=None):
             PlanImpressions as plan_impressions,
             PlatformCampaignID as platform_campaign_id,
             PlatformAccountID as platform_account_id,
-            CommissionOnlyFlag as commission_only_flag
+            CommissionOnlyFlag as commission_only_flag,
+            ClientPO as client_po,
+            RunMonth as run_month
     FROM SWD_V_MEDIA_PLAN
 
     """

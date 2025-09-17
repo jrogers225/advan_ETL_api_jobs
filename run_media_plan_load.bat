@@ -3,12 +3,12 @@ REM Batch file to run load_media_plan\main.py
 REM This can be scheduled in Windows Task Scheduler
 REM Usage: run_media_plan_load.bat [start_date]
 REM Example: run_media_plan_load.bat 2025-08-01
+REM Set default start date to 365 days ago if no parameter provided
 
-REM Set default start date to 120 days ago if no parameter provided
 set START_DATE=%1
 if "%START_DATE%"=="" (
-    REM Calculate date 120 days ago
-    powershell -Command "& {(Get-Date).AddDays(-120).ToString('yyyy-MM-dd')}" > temp_date.txt
+    REM Calculate date 365 days ago
+    powershell -Command "& {(Get-Date).AddDays(-365).ToString('yyyy-MM-dd')}" > temp_date.txt
     set /p START_DATE=<temp_date.txt
     del temp_date.txt
 )
